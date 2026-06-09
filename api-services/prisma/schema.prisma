@@ -1,0 +1,162 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+
+  createdJobs Job[] @relation("CreatedJobs")
+  assignedJobs Job[] @relation("AssignedJobs")
+  updatedJobs Job[] @relation("UpdatedJobs")
+  createdWorkspaces Workspace[] 
+  members WorkspaceMember[]
+  comments Comment[]
+  replies Reply[] 
+  messages Message[]
+  email String? @unique
+  username String @unique
+  password String
+  created_at DateTime @default(now())
+}
+
+model Workspace {
+  id Int @id @default(autoincrement())
+  jobs Job[]
+  members WorkspaceMember[]
+  creator User @relation(fields:[created_by],references:[id])
+  created_by Int
+  name String
+  created_at DateTime @default(now())
+
+ 
+  messages Message[]
+
+  
+}
+
+enum Roles {
+  OWNER
+  ADMIN
+  MEMBER
+  GUEST
+}
+
+model WorkspaceMember {
+  id Int @id @default(autoincrement())
+  user User @relation(fields:[user_id],references:[id])
+  user_id Int
+  workspace Workspace @relation(fields:[workspace_id],references:[id])
+  workspace_id Int
+  role Roles
+  joined_at DateTime @default(now())
+
+  @@unique([user_id,workspace_id])
+
+  
+}
+enum Statuses {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+}
+
+enum Priorities {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model Job {
+  id Int @id @default(autoincrement())
+  workspace Workspace @relation(fields:[workspace_id],references:[id])
+  workspace_id Int
+  assignee User? @relation("AssignedJobs",fields:[assigned_to],references:[id])
+  assigned_to Int?
+  creator User @relation("CreatedJobs",fields:[created_by],references:[id])
+  created_by Int
+  updatedBy User @relation("UpdatedJobs",fields:[updated_by],references:[id])
+  updated_by Int
+  deadline DateTime?
+  status Statuses
+  priority Priorities
+  name String
+  description String
+  content String
+  comments Comment[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  
+}
+
+model Message{
+  id Int @id @default(autoincrement())
+  user User @relation(fields:[user_id],references:[id])
+  user_id Int
+  workspace Workspace @relation(fields:[workspace_id],references:[id])
+  workspace_id Int
+  content String
+  created_at DateTime @default(now())
+}
+
+model Comment {
+  id Int @id @default(autoincrement())
+ 
+   replies Reply[]
+
+  job Job @relation(fields:[job_id],references:[id])
+  job_id Int
+  user User @relation(fields:[user_id],references:[id])
+  user_id Int
+  content String
+  created_at DateTime @default(now())
+
+
+}
+
+model Reply {
+  id Int @id @default(autoincrement())
+  comment Comment @relation(fields:[comment_id],references:[id])
+  comment_id Int
+  user User @relation(fields:[created_by],references:[id])
+  created_by Int
+  content String
+  created_at DateTime @default(now())
+
+
+
+}
+
+enum entityTypes{
+  USER
+  WORKSPACE
+  WORKSPACE_MEMBER
+  JOB
+  MESSAGE
+  COMMENT
+  REPLY
+}
+model Log {
+  id Int @id @default(autoincrement())
+  entityType entityTypes
+  entityId Int
+  message String
+  created_at DateTime @default(now())
+}
+
+
+
+
+

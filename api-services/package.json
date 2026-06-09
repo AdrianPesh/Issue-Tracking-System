@@ -1,0 +1,27 @@
+{
+  "name": "issue_tracking_system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^5.5.1",
+    "@as-integrations/express5": "^1.1.2",
+    "@prisma/client": "^5.22.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "graphql": "^16.14.1",
+    "http-server": "^14.1.1",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.21.0",
+    "prisma": "^5.22.0",
+    "redis": "^6.0.0",
+    "socket.io": "^4.8.3"
+  }
+}
