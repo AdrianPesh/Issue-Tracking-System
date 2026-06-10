@@ -9,11 +9,13 @@ const { replyHandler } = require("./handlers/replyHandler");
 const { workspaceSubscriber } = require("./subscribers/workspaceSubscriber");
 const socketAuth = require("./middleware/socketMiddleware");
 const {logSubscriber} = require("./subscribers/logSubsriber");
+require("dotenv").config();
 const sleep = function(ms){
  return new Promise(resolve=>setTimeout(resolve,ms));
 }
 
 const startServer = async () => {
+    console.log(process.env.REDIS_URL);
  let redisConnected =false;
 
     
