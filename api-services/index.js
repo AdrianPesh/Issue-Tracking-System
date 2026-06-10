@@ -1,4 +1,4 @@
-const createApp = require("./app");
+const {startApp} = require("./app");
 const { Server } = require("socket.io");
 const http = require("http");
 const { messageHandler } = require("./handlers/messageHandler");
@@ -29,7 +29,7 @@ const startServer = async () => {
        }
     }
 
-    const app = await createApp();
+    const app = await startApp();
     const httpServer = http.createServer(app);
 
     const io = new Server(httpServer, {

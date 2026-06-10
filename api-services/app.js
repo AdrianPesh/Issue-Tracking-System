@@ -5,6 +5,7 @@ const resolvers = require("./resolvers/index");
 const cors = require("cors");
 const context = require("./middleware/contextMiddleware");
 const {expressMiddleware} = require("@as-integrations/express5");
+
 const startApp = async()=>{
     const app =express();
     const server = new ApolloServer({
@@ -18,5 +19,5 @@ const startApp = async()=>{
     return app;
 }
 
-module.exports = startApp;
+module.exports = {startApp};
 
